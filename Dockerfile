@@ -1,32 +1,31 @@
-FROM ubuntu:20.04
+FROM python:3.12-slim
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /app
 
 RUN apt-get update -y && \
-  apt-get install build-essential -y && \
-  apt-get install git -y && \
-  apt-get install curl -y && \
-  apt-get install jq -y 
+  apt-get install -y --no-install-recommends build-essential git curl jq ca-certificates gnupg && \
+  rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev \
-  libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 \
-  libxtst6 xauth xvfb tzdata software-properties-common
+RUN apt-get update -y && apt-get install -y --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev \
+  libnotify-dev libnss3 libxss1 libasound2 \
+  libxtst6 xauth xvfb tzdata && rm -rf /var/lib/apt/lists/*
 
-RUN add-apt-repository ppa:deadsnakes/ppa -y && \
-  apt-get install python3.12 python3-pip -y && \
-  pip install pipenv
+ENV LANG=C.UTF-8
+ENV PIPENV_YES=1 PIPENV_VENV_IN_PROJECT=1
+
+RUN python -m pip install --upgrade pip pipenv
 
   RUN curl -sL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh && \
   bash nodesource_setup.sh && \
   cat /etc/apt/sources.list.d/nodesource.list
 
-RUN apt-get install nodejs -y
+RUN apt-get update -y && apt-get install -y --no-install-recommends nodejs && rm -rf /var/lib/apt/lists/*
 RUN node --version && npm --version
 
 COPY Pipfile /app/Pipfile
 COPY Pipfile.lock /app/Pipfile.lock
-RUN pipenv install --dev
+RUN pipenv --python $(command -v python) install --dev
 RUN cp -a /app/. /.project/
 
 COPY package.json /.project/package.json
@@ -37,7 +36,7 @@ RUN mkdir -p /opt/app && cp -a /.project/. /opt/app/
 WORKDIR /opt/app
 
 RUN npm ci
-RUN pipenv install --dev
+RUN pipenv --python $(command -v python) install --dev
 
 COPY . /opt/app
 

@@ -3,7 +3,7 @@ const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base');
 
 const devServerOpen = process.env.WEBPACK_DEV_DISABLE_OPEN !== 'true';
-const devServerPort = 3000;
+const devServerPort = 4001;
 const devServerAPIProxyPort = 8080;
 
 const config = {

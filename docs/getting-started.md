@@ -25,7 +25,7 @@ docker compose -f docker-compose.dev.yml up --build
 ```
 
 * The full stack (frontend, backend, MongoDB, Temporal, etc.) starts in hot‑reload mode.  
-* Once the containers are healthy, your browser should open automatically at **http://localhost:3000**.  
+* Once the containers are healthy, your browser should open automatically at **http://localhost:4000**.  
   If it doesn’t, visit the URL manually.  
 
 ### 2. Locally (npm run serve)
@@ -45,7 +45,7 @@ npm run serve
 # Example: npm run serve -- --no-temporal
 ```
 
-* **Frontend:** http://localhost:3000  
+* **Frontend:** http://localhost:4000  
 * **Backend:**  http://localhost:8080  
 * **MongoDB:**  `mongodb://localhost:27017`  
 * Disable the auto‑opening browser tab by exporting `WEBPACK_DEV_DISABLE_OPEN=true`.  
