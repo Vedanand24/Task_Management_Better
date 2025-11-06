@@ -30,10 +30,10 @@ const App = () => {
 
 export const protectedRoutes = [
   {
-    path: '',
+    path: '/',
     element: <App />,
     children: [
-      { path: '', element: <Dashboard /> },
+      { index: true, element: <Dashboard /> },
       { path: 'tasks', element: <Dashboard /> }, // Tasks route points to Dashboard (which shows tasks)
       { path: '*', element: <NotFound /> },
     ],
