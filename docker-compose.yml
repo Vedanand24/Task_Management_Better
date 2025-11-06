@@ -15,8 +15,7 @@ services:
     depends_on:
       app-db:
         condition: service_started
-      temporal:
-        condition: service_healthy
+      # Allow app to start without waiting for Temporal in dev
     ports:
       - '4000:4000'
       - '8080:8080'

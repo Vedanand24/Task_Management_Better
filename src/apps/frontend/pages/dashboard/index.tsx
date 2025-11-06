@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import Button from 'frontend/components/button';
 import Input from 'frontend/components/input';
 import { TaskService } from 'frontend/services';
-import { Task, CreateTaskRequest, UpdateTaskRequest } from 'frontend/types';
+import { Task, CreateTaskRequest, UpdateTaskRequest, PaginatedTasksResponse } from 'frontend/types';
 import { ButtonKind, ButtonType } from 'frontend/types/button';
 import { getAccessTokenFromStorage } from 'frontend/utils/storage-util';
 
@@ -36,9 +36,17 @@ const Dashboard: React.FC = () => {
       }
 
       const response = await taskService.getTasks(accessToken, page, 10);
-      setTasks(response.data.items);
-      setTotalPages(response.data.total_pages);
-      setTotalCount(response.data.total_count);
+      if (!response.data) {
+        toast.error('Failed to load tasks');
+        setTasks([]);
+        setTotalPages(1);
+        setTotalCount(0);
+        return;
+      }
+      const data = response.data as PaginatedTasksResponse;
+      setTasks(data.items);
+      setTotalPages(data.total_pages);
+      setTotalCount(data.total_count);
       setCurrentPage(page);
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to load tasks');

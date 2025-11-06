@@ -3,7 +3,7 @@ const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base');
 
 const devServerOpen = process.env.WEBPACK_DEV_DISABLE_OPEN !== 'true';
-const devServerPort = 4001;
+const devServerPort = 4000;
 const devServerAPIProxyPort = 8080;
 
 const config = {
@@ -19,6 +19,8 @@ const config = {
     historyApiFallback: true,
     hot: true,
     open: devServerOpen,
+    host: '0.0.0.0',
+    allowedHosts: 'all',
     port: devServerPort,
     proxy: {
       secure: false,

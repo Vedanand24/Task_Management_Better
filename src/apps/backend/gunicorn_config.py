@@ -4,9 +4,10 @@ import multiprocessing
 bind = "0.0.0.0:8080"
 
 # Worker Processes
-workers = multiprocessing.cpu_count() * 2 + 1
+# Reduced to 1 worker for development to prevent memory issues in Docker
+workers = 1
 worker_class = "gthread"
-threads = 2 * multiprocessing.cpu_count()
+threads = 4
 
 # Logging
 loglevel = "info"
@@ -15,5 +16,6 @@ access_log_format = "app - request - %(h)s - %(s)s - %(m)s - %(M)sms - %(U)s - %
 errorlog = "-"
 
 # Timeout
-timeout = 30
+timeout = 120  # Increased timeout for slow imports
 keepalive = 2
+preload_app = False  # Don't preload to avoid import issues

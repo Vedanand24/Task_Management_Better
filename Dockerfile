@@ -43,7 +43,8 @@ COPY . /opt/app
 # build arguments
 ARG APP_ENV
 
-RUN npm run build
+# Skip production build in docker-dev to allow hot-reload dev server to start
+RUN if [ "$APP_ENV" != "docker-dev" ]; then npm run build; else echo "Skipping npm run build for APP_ENV=$APP_ENV"; fi
 
 CMD [ "npm", "start" ]
 
